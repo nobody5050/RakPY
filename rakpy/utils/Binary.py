@@ -20,11 +20,11 @@ class Binary:
     @staticmethod
     def readLong(data: bytes) -> int:
         Binary.checkLength(data, 8)
-        return unpack('>Q', data)[0]
+        return unpack('>q', data)[0]
     
     @staticmethod
     def writeLong(value: int) -> bytes:
-        return pack('>Q', value)
+        return pack('>q', value)
 
     @staticmethod
     def readShort(data: bytes) -> int:
@@ -37,10 +37,10 @@ class Binary:
         return pack('>h', value)
 
     @staticmethod
-    def readUnsignedShort(data: bytes) -> int:
+    def readUShort(data: bytes) -> int:
         Binary.checkLength(data, 2)
         return unpack('>H', data)[0]
 
     @staticmethod
-    def writeUnsignedShort(value: int) -> bytes:
+    def writeUShort(value: int) -> bytes:
         return pack('>H', value)
