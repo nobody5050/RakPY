@@ -16,7 +16,6 @@ class Binary:
     def writeByte(value: int) -> bytes:
         return chr(value).encode()
 
-
     @staticmethod
     def readLong(data: bytes) -> int:
         Binary.checkLength(data, 8)
