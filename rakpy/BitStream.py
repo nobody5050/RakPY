@@ -1,7 +1,7 @@
 from struct import pack, unpack, calcsize 
 import sys
 
-class BinUtils:
+class BitStream:
     offset = 0
     buffer = b""
     
