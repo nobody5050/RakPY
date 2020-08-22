@@ -186,3 +186,7 @@ class BitStream:
                 BitStream.putByte(int(s) & 0xff)
             BitStream.putUShort(port)
     
+    @staticmethod
+    def getUInt24LE():
+        return BitStream.readUInt24LE(BitStream.get(3))
+    
