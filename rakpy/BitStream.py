@@ -1,6 +1,8 @@
 from struct import pack, unpack, calcsize 
 import sys
 
+from rakpy.RakPY import RakPY
+
 class BitStream:
     offset = 0
     buffer = b""
@@ -116,3 +118,19 @@ class BitStream:
     @staticmethod
     def writeUInt24LE(value: int) -> bytes:
         return pack('<L', value)[0:-1]
+    
+    @staticmethod
+    def getByte():
+        return BitStream.readByte(BitStream.get(1))
+     
+    @staticmethod
+    def putByte(value):
+        BitStream.buffer += BitStream.writeByte(value)
+    
+    @staticmethod
+    def getLong():
+        return BitStream.readLong(BitStream.get(8))
+     
+    @staticmethod
+    def putLong(value):
+        BitStream.buffer += BitStream.writeLong(value)
