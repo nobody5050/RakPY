@@ -2,6 +2,73 @@ from struct import pack, unpack, calcsize
 import sys
 
 class BinUtils:
+    offset = 0
+    buffer = b""
+    
+    @staticmethod
+    def reset():
+        BinaryStream.buffer = b""
+        BinaryStream.offset = 0
+       
+    @staticmethod
+    def rewind():
+        BinaryStream.offset = 0
+       
+    @staticmethod
+    def setOffset(offset: int):
+        BinaryStream.offset = offset
+      
+    @staticmethod
+    def setBuffer(buffer: bytes = b"", offset: int = 0):
+        BinaryStream.buffer = buffer
+        BinaryStream.offset = offset
+        
+    @staticmethod
+    def getOffset() -> int:
+        return BinaryStream.offset
+      
+    @staticmethod
+    def getBuffer() -> bytes:
+        return BinaryStream.buffer
+       
+    @staticmethod
+    def get(length) -> bytes:
+        if length == 0:
+            return b""
+        buflength = len(BinaryStream.buffer)
+        if length == True:
+            s = BinaryStream.buffer[BinaryStream.offset:]
+            BinaryStream.offset = buflength
+            return s
+        if length < 0:
+            BinaryStream.offset = buflength - 1
+            return b""
+        remaining = buflength - BinaryStream.offset
+        if remaining < length:
+            raise Exception("Not enough bytes left in buffer: need " + str(length) + ", have " + str(remaining))
+        if length == 1:
+            b = BinaryStream.buffer[BinaryStream.offset]
+            BinaryStream.offset += 1
+            return b
+        else:
+            start = BinaryStream.offset - length
+            BinaryStream.offset += length
+            if start < 0:
+                 start = start + len(BinaryStream.buffer)
+            return BinaryStream.buffer[start:start + length]
+       
+    @staticmethod
+    def getRemaining() -> str:
+        s = BinaryStream.buffer[BinaryStream.offset:]
+        if s == False:
+            raise Exception("No bytes left to read")
+        BinaryStream.offset = len(BinaryStream.buffer)
+        return s
+    
+    @staticmethod
+    def put(s):
+        BinaryStream.buffer += s
+    
     @staticmethod
     def readByte(data: bytes) -> int:
         return unpack('>b', data)[0]
