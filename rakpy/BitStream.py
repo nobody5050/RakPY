@@ -193,3 +193,11 @@ class BitStream:
     @staticmethod
     def putUInt24LE(value):
         BitStream.buffer += BitStream.writeUInt24LE(value)
+        
+    @staticmethod
+    def feof():
+        try:
+            BinaryStream.buffer[BinaryStream.offset]
+            return True
+        except:
+            return False
