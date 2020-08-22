@@ -1,7 +1,8 @@
 from rakpy.protocol.Packet import Packet
+from rakpy.protocol.PacketIdentifiers import PacketIdentifiers
 
 class UnconnectedPing(Packet):
-    PID = 0x01
+    PID = PacketIdentifiers.UnconnectedPing
     
     time = None
     magic = None
