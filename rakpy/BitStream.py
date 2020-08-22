@@ -134,3 +134,19 @@ class BitStream:
     @staticmethod
     def putLong(value):
         BitStream.buffer += BitStream.writeLong(value)
+        
+    @staticmethod
+    def getShort():
+        return BitStream.readShort(BitStream.get(2))
+     
+    @staticmethod
+    def putShort(value):
+        BitStream.buffer += BitStream.writeShort(value)
+        
+    @staticmethod
+    def getUShort():
+        return BitStream.readUShort(BitStream.get(2))
+     
+    @staticmethod
+    def putUShort(value):
+        BitStream.buffer += BitStream.writeUShort(value)
