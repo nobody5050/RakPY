@@ -172,10 +172,17 @@ class BitStream:
     def getAddress():
         version = BitStream.getByte()
         if version == 4: 
-            ip = str(BitStream.getByte()) + "." + str(BitStream.getByte()) + "." + str(BitStream.getByte()) + str(BitStream.getByte())
+            ip = str((~BitStream.getByte()) & 0xff) + "." + str((~BitStream.getByte()) & 0xff) + "." + str((~BitStream.getByte()) & 0xff) + str((~BitStream.getByte()) & 0xff)
             port = BitStream.getUShort()
             return (ip, port, version)
         else:
             raise Exception("Unknown ip version " + str(version))
             
+    @staticmethod
+    def putAddress(ip: str, port: int, version: int = 4):
+        BitStream.putByte(version)
+        if version == 4:
+            for s in str(ip).split("."):
+                BitStream.putByte(int(s) & 0xff)
+            BitStream.putUShort(port)
     
