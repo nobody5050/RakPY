@@ -167,5 +167,10 @@ class BitStream:
     @staticmethod
     def putBool(value):
         BitStream.buffer += BitStream.writeBool(value)
-        
+       
+    @staticmethod
+    def getAddress():
+        version = BitStream.getByte()
+        ip = str(BitStream.getByte()) + "." + str(BitStream.getByte()) + "." + str(BitStream.getByte()) + str(BitStream.getByte())
+        port = BitStream.getUShort()
     
