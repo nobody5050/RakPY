@@ -16,7 +16,7 @@ class Packet(BitStream):
     def decodePayload(self): pass
     
     def decodeHeader(self):
-        return self.getByte()  # PID
+        return self.getByte()
     
     def decode(self):
         self.offset = 0
