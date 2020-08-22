@@ -43,3 +43,11 @@ class Binary:
     @staticmethod
     def writeUShort(value: int) -> bytes:
         return pack('>H', value)
+    
+    @staticmethod
+    def readBool(data: bytes) -> bool:
+        return unpack('?', data)[0]
+
+    @staticmethod
+    def writeBool(value: bool) -> bytes:
+        return b'\x01' if value else b'\x00'
