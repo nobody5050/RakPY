@@ -150,3 +150,12 @@ class BitStream:
     @staticmethod
     def putUShort(value):
         BitStream.buffer += BitStream.writeUShort(value)
+     
+    @staticmethod
+    def getString() -> bytes:
+        return BitStream.get(BitStream.getShort())
+    
+    @staticmethod
+    def putString(value: bytes):
+        BitStream.putShort(len(s))
+        BitStream.put(s)
