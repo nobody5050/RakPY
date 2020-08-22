@@ -1,11 +1,15 @@
+from abc import ABCMeta, abstractmethod
+
 from rakpy.BitStream import BitStream
 
 class Packet(BitStream):
+    __metaclass__ = ABCMeta
     sendTime = None
     
     def encodeHeader(self):
         self.putByte(self.ID)
-        
+       
+    @abstractmethod
     def encodePayload(self): pass
         
     def encode(self):
@@ -13,6 +17,7 @@ class Packet(BitStream):
         self.encodeHeader()
         self.encodePayload()
         
+    @abstractmethod
     def decodePayload(self): pass
     
     def decodeHeader(self):
