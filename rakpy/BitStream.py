@@ -136,6 +136,14 @@ class BitStream:
         BitStream.buffer += BitStream.writeLong(value)
         
     @staticmethod
+    def getMagic():
+        return self.get(16)
+    
+    @staticmethod
+    def putMagic():
+        BitStream.buffer += RakNetPY.MAGIC
+        
+    @staticmethod
     def getShort():
         return BitStream.readShort(BitStream.get(2))
      
