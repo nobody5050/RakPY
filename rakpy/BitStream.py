@@ -174,5 +174,8 @@ class BitStream:
         if version == 4: 
             ip = str(BitStream.getByte()) + "." + str(BitStream.getByte()) + "." + str(BitStream.getByte()) + str(BitStream.getByte())
             port = BitStream.getUShort()
-        return (ip, port, version)
+            return (ip, port, version)
+        else:
+            raise Exception("Unknown ip version " + str(version))
+            
     
