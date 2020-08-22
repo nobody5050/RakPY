@@ -10,11 +10,11 @@ class Binary:
     @staticmethod
     def readByte(data: bytes) -> int:
         Binary.checkLength(data, 1)
-        return ord(data)
+        return unpack('>b', data)[0]
 
     @staticmethod
     def writeByte(value: int) -> bytes:
-        return chr(value).encode()
+        return pack('>b', data)
 
     @staticmethod
     def readLong(data: bytes) -> int:
