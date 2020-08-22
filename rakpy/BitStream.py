@@ -171,6 +171,8 @@ class BitStream:
     @staticmethod
     def getAddress():
         version = BitStream.getByte()
-        ip = str(BitStream.getByte()) + "." + str(BitStream.getByte()) + "." + str(BitStream.getByte()) + str(BitStream.getByte())
-        port = BitStream.getUShort()
+        if version == 4: 
+            ip = str(BitStream.getByte()) + "." + str(BitStream.getByte()) + "." + str(BitStream.getByte()) + str(BitStream.getByte())
+            port = BitStream.getUShort()
+        return (ip, port, version)
     
