@@ -51,3 +51,12 @@ class Binary:
     @staticmethod
     def writeBool(value: bool) -> bytes:
         return b'\x01' if value else b'\x00'
+    
+    @staticmethod
+    def readUInt24LE(data: bytes) -> int:
+        Binary.checkLength(data, 3)
+        return unpack('<L', data + b'\x00')[0]
+
+    @staticmethod
+    def writeUInt24LE(value: int) -> bytes:
+        return pack('<L', value)[0:-1]
