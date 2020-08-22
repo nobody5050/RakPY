@@ -141,7 +141,7 @@ class BitStream:
     
     @staticmethod
     def putMagic():
-        BitStream.buffer += RakNetPY.MAGIC
+        BitStream.buffer += RakPY.MAGIC
         
     @staticmethod
     def getShort():
