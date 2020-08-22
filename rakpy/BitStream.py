@@ -190,3 +190,6 @@ class BitStream:
     def getUInt24LE():
         return BitStream.readUInt24LE(BitStream.get(3))
     
+    @staticmethod
+    def putUInt24LE(value):
+        BitStream.buffer += BitStream.writeUInt24LE(value)
