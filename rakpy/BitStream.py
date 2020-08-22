@@ -159,3 +159,13 @@ class BitStream:
     def putString(value: bytes):
         BitStream.putShort(len(s))
         BitStream.put(s)
+
+    @staticmethod
+    def getBool():
+        return BitStream.readBool(BitStream.get(1))
+    
+    @staticmethod
+    def putBool(value):
+        BitStream.buffer += BitStream.writeBool(value)
+        
+    
