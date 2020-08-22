@@ -1,7 +1,7 @@
 from struct import pack, unpack, calcsize 
 import sys
 
-class Binary:
+class BinUtils:
     @staticmethod
     def readByte(data: bytes) -> int:
         return unpack('>b', data)[0]
