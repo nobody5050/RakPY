@@ -133,7 +133,7 @@ class BitStream:
      
     @staticmethod
     def putLong(value):
-        BitStream.buffer += BitStream.writeLong(value)
+        BitStream.put(BitStream.writeLong(value))
         
     @staticmethod
     def getMagic():
@@ -141,7 +141,7 @@ class BitStream:
     
     @staticmethod
     def putMagic():
-        BitStream.buffer += RakPY.MAGIC
+        BitStream.put(RakPY.MAGIC)
         
     @staticmethod
     def getShort():
@@ -149,7 +149,7 @@ class BitStream:
      
     @staticmethod
     def putShort(value):
-        BitStream.buffer += BitStream.writeShort(value)
+        BitStream.put(BitStream.writeShort(value))
         
     @staticmethod
     def getUShort():
@@ -157,7 +157,7 @@ class BitStream:
      
     @staticmethod
     def putUShort(value):
-        BitStream.buffer += BitStream.writeUShort(value)
+        BitStream.put(BitStream.writeUShort(value))
      
     @staticmethod
     def getString() -> bytes:
@@ -174,7 +174,7 @@ class BitStream:
     
     @staticmethod
     def putBool(value):
-        BitStream.buffer += BitStream.writeBool(value)
+        BitStream.put(BitStream.writeBool(value))
        
     @staticmethod
     def getAddress():
@@ -200,7 +200,7 @@ class BitStream:
     
     @staticmethod
     def putUInt24LE(value):
-        BitStream.buffer += BitStream.writeUInt24LE(value)
+        BitStream.put(BitStream.writeUInt24LE(value))
         
     @staticmethod
     def feof():
