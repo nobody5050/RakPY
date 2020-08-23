@@ -1,6 +1,6 @@
 import socket
 
-class UDPServerSocket:
+class ServerSocket:
     socket = None
     
     def __init__(self, ip: str, port: int):
