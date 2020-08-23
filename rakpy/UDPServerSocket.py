@@ -8,7 +8,7 @@ class UDPServerSocket:
         try:
             self.socket.bind((ip, port))
         except socket.error as e:
-            print("Cannot use the port! Is a server already on?")
+            print("Cannot use this port! Is a server already on it?")
             print(str(e))
         else:
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
