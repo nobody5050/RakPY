@@ -5,7 +5,6 @@ class UnconnectedPing(Packet):
     PID = PacketIdentifiers.UnconnectedPing
     
     time = None
-    magic = None
     clientID = None
     
     def encodePayload(self):
@@ -15,6 +14,6 @@ class UnconnectedPing(Packet):
         
     def decodePayload(self):
         time = self.getLong()
-        magic = self.getMagic
-        clientID = self.getLong
+        magic = self.getMagic()
+        clientID = self.getLong()
     
