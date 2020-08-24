@@ -26,5 +26,6 @@ class Server:
         newPacket = None
         if pid == UnconnectedPing.PID or pid == UnconnectedPingOpenConnection.PID:
             pk = UnconnectedPing()
+            pk.time = data[:8]
             self.sendRawPacket(pk, address)
     
