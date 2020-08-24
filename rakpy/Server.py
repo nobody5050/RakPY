@@ -11,8 +11,9 @@ class Server:
     def getPID(self, data):
         return data[0]
     
-    def handler(self, data, address):
+    def handle(self, data, address):
         pid = getPID(data)
-        pk = None
-        if pid == 
+        newPacket = None
+        if pid == UnconnectedPing.PID:
+            pk = UnconnectedPing()
     
