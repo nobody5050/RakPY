@@ -24,7 +24,7 @@ class Server:
     def handle(self, data, address):
         pid = getPID(data)
         newPacket = None
-        if pid == UnconnectedPing.PID:
+        if pid == UnconnectedPing.PID or pid == UnconnectedPingOpenConnection.PID:
             pk = UnconnectedPing()
             self.sendRawPacket(pk, address)
     
