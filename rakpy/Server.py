@@ -25,7 +25,9 @@ class Server:
         pid = getPID(data)
         newPacket = None
         if pid == UnconnectedPing.PID or pid == UnconnectedPingOpenConnection.PID:
-            pk = UnconnectedPing()
+            pk = UnconnectedPong()
             pk.time = data[:8]
+            pk.serverID = b"\x10\x00\x10\x00\x10\x00\x10\x00"
+            pk.serverIDString = ""
             self.sendRawPacket(pk, address)
     
