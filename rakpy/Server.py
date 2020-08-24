@@ -23,7 +23,7 @@ class Server:
     
     def handle(self, data, address):
         pid = getPID(data)
-        newPacket = None
+        pk = None
         if pid == UnconnectedPing.PID or pid == UnconnectedPingOpenConnection.PID:
             pk = UnconnectedPong()
             pk.time = data[:8]
