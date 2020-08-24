@@ -3,10 +3,10 @@ import socket
 class ServerSocket:
     socket = None
     
-    def __init__(self, ip: str, port: int):
+    def __init__(self, address):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
         try:
-            self.socket.bind((ip, port))
+            self.socket.bind(address)
         except socket.error as e:
             print("Cannot use this port! Is a server already on it?")
             print(str(e))
@@ -23,8 +23,8 @@ class ServerSocket:
         else:
             return data
           
-    def putPacket(self, buffer, ip, port):
-        return self.socket.sendto(buffer, (ip, port))
+    def putPacket(self, buffer, address):
+        return self.socket.sendto(buffer, address)
       
     def closeSocket(self):
         self.socket.close()
