@@ -6,7 +6,6 @@ class UnconnectedPong(Packet):
     
     time = None
     serverID = None
-    magic = None
     serverIDString = None
     
     def encodePayload(self):
@@ -17,6 +16,6 @@ class UnconnectedPong(Packet):
         
     def decodePayload(self):
         time = self.getLong()
-        serverID = self.getLong
-        magic = self.getMagic
-        serverIDString = self.getString
+        serverID = self.getLong()
+        magic = self.getMagic()
+        serverIDString = self.getString()
