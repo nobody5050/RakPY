@@ -9,67 +9,67 @@ class BitStream:
     
     @staticmethod
     def reset():
-        BinaryStream.buffer = b""
-        BinaryStream.offset = 0
+        BitStream.buffer = b""
+        BitStream.offset = 0
        
     @staticmethod
     def rewind():
-        BinaryStream.offset = 0
+        BitStream.offset = 0
        
     @staticmethod
     def setOffset(offset: int):
-        BinaryStream.offset = offset
+        BitStream.offset = offset
       
     @staticmethod
     def setBuffer(buffer: bytes = b"", offset: int = 0):
-        BinaryStream.buffer = buffer
-        BinaryStream.offset = offset
+        BitStream.buffer = buffer
+        BitStream.offset = offset
         
     @staticmethod
     def getOffset() -> int:
-        return BinaryStream.offset
+        return BitStream.offset
       
     @staticmethod
     def getBuffer() -> bytes:
-        return BinaryStream.buffer
+        return BitStream.buffer
        
     @staticmethod
     def get(length) -> bytes:
         if length == 0:
             return b""
-        buflength = len(BinaryStream.buffer)
+        buflength = len(BitStream.buffer)
         if length == True:
-            s = BinaryStream.buffer[BinaryStream.offset:]
-            BinaryStream.offset = buflength
+            s = BitStream.buffer[BitStream.offset:]
+            BitStream.offset = buflength
             return s
         if length < 0:
-            BinaryStream.offset = buflength - 1
+            BitStream.offset = buflength - 1
             return b""
-        remaining = buflength - BinaryStream.offset
+        remaining = buflength - BitStream.offset
         if remaining < length:
             raise Exception("Not enough bytes left in buffer: need " + str(length) + ", have " + str(remaining))
         if length == 1:
-            b = BinaryStream.buffer[BinaryStream.offset]
-            BinaryStream.offset += 1
+            b = BitStream.buffer[BitStream.offset]
+            BitStream.offset += 1
             return b
         else:
-            start = BinaryStream.offset - length
-            BinaryStream.offset += length
+            start = BitStream.offset - length
+            BitStream.offset += length
             if start < 0:
-                 start = start + len(BinaryStream.buffer)
-            return BinaryStream.buffer[start:start + length]
+                 start = start + len(BitStream.buffer)
+            return BitStream.buffer[start:start + length]
        
     @staticmethod
     def getRemaining() -> str:
-        s = BinaryStream.buffer[BinaryStream.offset:]
+        s = BitStream.buffer[BitStream.offset:]
         if s == False:
             raise Exception("No bytes left to read")
-        BinaryStream.offset = len(BinaryStream.buffer)
+        BitStream.offset = len(BitStream.buffer)
         return s
     
     @staticmethod
     def put(s):
-        BinaryStream.buffer += s
+        BitStream.buffer += s
     
     @staticmethod
     def readByte(data: bytes) -> int:
@@ -77,7 +77,7 @@ class BitStream:
 
     @staticmethod
     def writeByte(value: int) -> bytes:
-        return pack('>b', data)
+        return pack('>b', value)
 
     @staticmethod
     def readLong(data: bytes) -> int:
@@ -165,8 +165,8 @@ class BitStream:
     
     @staticmethod
     def putString(value: bytes):
-        BitStream.putShort(len(s))
-        BitStream.put(s)
+        BitStream.putShort(len(value))
+        BitStream.put(value)
 
     @staticmethod
     def getBool():
@@ -205,7 +205,7 @@ class BitStream:
     @staticmethod
     def feof():
         try:
-            BinaryStream.buffer[BinaryStream.offset]
+            BitStream.buffer[BitStream.offset]
             return True
         except:
             return False
