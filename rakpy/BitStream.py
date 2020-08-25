@@ -161,11 +161,11 @@ class BitStream:
      
     @staticmethod
     def getString() -> str:
-        return BitStream.get(BitStream.getShort()).decode("utf-8")
+        return BitStream.get(BitStream.getUShort()).decode("utf-8")
     
     @staticmethod
     def putString(value: str):
-        BitStream.putShort(len(value))
+        BitStream.putUShort(len(value))
         BitStream.put(value.encode("utf-8"))
 
     @staticmethod
