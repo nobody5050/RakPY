@@ -19,7 +19,6 @@ class Server:
 
     def __init__(self, address):
         self.address = address
-        self.run()
         
     def setOption(self, name, value):
         self.options[name] = value
