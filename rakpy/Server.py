@@ -21,8 +21,8 @@ class Server:
         self.address = address
         self.run()
         
-    def setOption(name, value):
-        options[name] = value
+    def setOption(self, name, value):
+        self.options[name] = value
 
     def getPID(self, data):
         return data[0]
