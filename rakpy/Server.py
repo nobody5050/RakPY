@@ -45,7 +45,7 @@ class Server:
             pk.time = int(t.time() - self.startTime)
             pk.serverID = int.from_bytes(b"\x10\x00\x10\x00\x10\x00\x10\x00", "big")
             pk.serverIDString = self.options["name"]
-            self.sendRawPacket(pk, address)
+            self.sendPacket(pk, address)
 
     def run(self):
         sock = ServerSocket(self.address)
