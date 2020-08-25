@@ -13,18 +13,17 @@ class ServerSocket:
         else:
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-            self.socket.setblocking(False)
+            #self.socket.setblocking(False)
        
     def getPacket(self):
-        try:
-            data = self.socket.recvfrom(65535)
-        except Exception as e:
-            pass
-        else:
-            return data
+        data = self.socket.recvfrom(65535)
+        print(f"IN -> {data}")
+        return data
           
     def putPacket(self, buffer, address):
-        return self.socket.sendto(buffer, address)
+        data = self.socket.sendto(buffer, address)
+        print(f"OUT -> {data}")
+        return data
       
     def closeSocket(self):
         self.socket.close()
