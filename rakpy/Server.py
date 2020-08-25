@@ -44,7 +44,7 @@ class Server:
         if pid == UnconnectedPing.PID or pid == UnconnectedPingOpenConnection.PID:
             pk = UnconnectedPong()
             pk.time = int(t.time() - self.startTime)
-            pk.serverID = len(self.options["name"])
+            pk.serverID = int.from_bytes(b"\x10\x00\x10\x00\x10\x00\x10\x00", "big")
             pk.serverIDString = bytes(self.options["name"], "utf-8")
             self.sendRawPacket(pk, address)
 
