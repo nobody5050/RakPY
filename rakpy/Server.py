@@ -1,3 +1,4 @@
+import time as t
 from rakpy.BitStream import BitStream
 from rakpy.protocol.ConnectedPing import ConnectedPing
 from rakpy.protocol.ConnectedPong import ConnectedPong
@@ -7,27 +8,42 @@ from rakpy.protocol.UnconnectedPong import UnconnectedPong
 from rakpy.ServerSocket import ServerSocket
 
 class Server:
+    address = None
+    startTime = None
+
+    def __init__(self, address):
+        self.address = address
+        self.run()
+
     def getPID(self, data):
         return data[0]
     
     def sendPacket(self, pk, address):
         pk.encode()
         buffer = BitStream.getBuffer()
-        ServerSocket.putPacket(buffer, address)
+        ServerSocket.putPacket(self, buffer, address)
         
     def sendRawPacket(self, pk, address):
         pk.encode()
-        BitStream.buffer = ord(pk.PID) + BitStream.getBuffer()
+        BitStream.buffer = bytes([pk.PID]) + BitStream.getBuffer()
         buffer = BitStream.getBuffer()
-        ServerSocket.putPacket(buffer, address)
+        ServerSocket.putPacket(self, buffer, address)
     
     def handle(self, data, address):
-        pid = getPID(data)
+        pid = self.getPID(data)
         pk = None
         if pid == UnconnectedPing.PID or pid == UnconnectedPingOpenConnection.PID:
             pk = UnconnectedPong()
-            pk.time = data[:8]
-            pk.serverID = b"\x10\x00\x10\x00\x10\x00\x10\x00"
-            pk.serverIDString = ""
+            pk.time = int(t.time() - self.startTime)
+            pk.serverID = len("MCPE;My server;407;1.16.0;0;0;0;MyServer;0".encode())
+            pk.serverIDString = "MCCP;My server;407;1.16.0;0;0;0;MyServer;0".encode()
             self.sendRawPacket(pk, address)
-    
+
+    def run(self):
+        sock = ServerSocket(self.address)
+        self.socket = sock.socket
+        self.startTime = t.time()
+        while True:
+            if sock.getPacket() != None:
+                data, address = sock.getPacket()
+                self.handle(data, address)
