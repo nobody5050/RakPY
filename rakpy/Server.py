@@ -35,8 +35,8 @@ class Server:
         if pid == UnconnectedPing.PID or pid == UnconnectedPingOpenConnection.PID:
             pk = UnconnectedPong()
             pk.time = int(t.time() - self.startTime)
-            pk.serverID = len("MCPE;My server;407;1.16.0;0;0;0;MyServer;0".encode())
-            pk.serverIDString = "MCCP;My server;407;1.16.0;0;0;0;MyServer;0".encode()
+            pk.serverID = len("MCCPP;My server;407;1.16.0;0;0;0;MyServer;0".encode())
+            pk.serverIDString = "MCCPP;My server;407;1.16.0;0;0;0;MyServer;0".encode()
             self.sendRawPacket(pk, address)
 
     def run(self):
