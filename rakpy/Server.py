@@ -19,12 +19,12 @@ class Server:
         return data[0]
     
     def sendPacket(self, pk, address):
-        pk.encode()
+        pk.encodePayload()
         buffer = BitStream.getBuffer()
         ServerSocket.putPacket(self, buffer, address)
         
     def sendRawPacket(self, pk, address):
-        pk.encode()
+        pk.encodePayload()
         BitStream.buffer = bytes([pk.PID]) + BitStream.getBuffer()
         buffer = BitStream.getBuffer()
         ServerSocket.putPacket(self, buffer, address)
@@ -35,8 +35,8 @@ class Server:
         if pid == UnconnectedPing.PID or pid == UnconnectedPingOpenConnection.PID:
             pk = UnconnectedPong()
             pk.time = int(t.time() - self.startTime)
-            pk.serverID = len("MCCPP;My server;407;1.16.0;0;0;0;MyServer;0".encode())
-            pk.serverIDString = "MCCPP;My server;407;1.16.0;0;0;0;MyServer;0".encode()
+            pk.serverID = len("MCPE;My server;407;1.16.0;0;0;0;MyServer;0")
+            pk.serverIDString = b"MCCPP;My server;407;1.16.0;0;0;0;MyServer;0"
             self.sendRawPacket(pk, address)
 
     def run(self):
