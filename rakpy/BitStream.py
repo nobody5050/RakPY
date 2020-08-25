@@ -160,13 +160,13 @@ class BitStream:
         BitStream.put(BitStream.writeUShort(value))
      
     @staticmethod
-    def getString() -> bytes:
-        return BitStream.get(BitStream.getShort())
+    def getString() -> str:
+        return BitStream.get(BitStream.getShort()).decode("utf-8")
     
     @staticmethod
-    def putString(value: bytes):
+    def putString(value: str):
         BitStream.putShort(len(value))
-        BitStream.put(value)
+        BitStream.put(value.encode("utf-8"))
 
     @staticmethod
     def getBool():
