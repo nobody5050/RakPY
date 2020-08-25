@@ -43,7 +43,7 @@ class Server:
         if pid == UnconnectedPing.PID or pid == UnconnectedPingOpenConnection.PID:
             pk = UnconnectedPong()
             pk.time = int(t.time() - self.startTime)
-            pk.serverID = int.from_bytes(b"\x10\x00\x10\x00\x10\x00\x10\x00", "big")
+            pk.serverID = BitStream.readLong(b"\x10\x00\x10\x00\x10\x00\x10\x00")
             pk.serverIDString = self.options["name"]
             self.sendPacket(pk, address)
 
