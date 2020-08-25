@@ -4,13 +4,13 @@ from rakpy.protocol.PacketIdentifiers import PacketIdentifiers
 class ConnectedPong(Packet):
     PID = PacketIdentifiers.ConnectedPong
     
-    pingTime = None
-    pongTime = None
+    pingTime = 0
+    pongTime = 0
     
     def encodePayload(self):
-        self.putLong(pingTime)
-        self.putLong(pongTime)
+        self.putLong(self.pingTime)
+        self.putLong(self.pongTime)
         
     def decodePayload(self):
-        pingTime = self.getLong()
-        pongTime = self.getLong()
+        self.pingTime = self.getLong()
+        self.pongTime = self.getLong()

@@ -7,7 +7,7 @@ class Packet(BitStream):
     sendTime = None
     
     def encodeHeader(self):
-        self.putByte(self.ID)
+        self.putByte(self.PID)
        
     @abstractmethod
     def encodePayload(self): pass

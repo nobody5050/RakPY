@@ -4,16 +4,16 @@ from rakpy.protocol.PacketIdentifiers import PacketIdentifiers
 class UnconnectedPing(Packet):
     PID = PacketIdentifiers.UnconnectedPing
     
-    time = None
-    clientID = None
+    time = 0
+    clientID = 0
     
     def encodePayload(self):
-        self.putLong(time)
+        self.putLong(self.time)
         self.putMagic()
-        self.putLong(clientID)
+        self.putLong(self.clientID)
         
     def decodePayload(self):
-        time = self.getLong()
-        magic = self.getMagic()
-        clientID = self.getLong()
+        self.time = self.getLong()
+        self.magic = self.getMagic()
+        self.clientID = self.getLong()
     
