@@ -10,10 +10,19 @@ from rakpy.ServerSocket import ServerSocket
 class Server:
     address = None
     startTime = None
+    
+    options = {
+                  "name": "",
+                  "custom_handler": lambda data, address, socket: 0,
+                  "custom_packets": [0x80]
+              }
 
     def __init__(self, address):
         self.address = address
         self.run()
+        
+    def setOption(name, value):
+        options[name] = value
 
     def getPID(self, data):
         return data[0]
@@ -35,8 +44,8 @@ class Server:
         if pid == UnconnectedPing.PID or pid == UnconnectedPingOpenConnection.PID:
             pk = UnconnectedPong()
             pk.time = int(t.time() - self.startTime)
-            pk.serverID = len("MCCPP;My server;407;1.16.0;0;0;0;MyServer;0")
-            pk.serverIDString = b"MCCPP;My server;407;1.16.0;0;0;0;MyServer;0"
+            pk.serverID = len(self.options["name"])
+            pk.serverIDString = bytes(self.options["name"], "utf-8")
             self.sendRawPacket(pk, address)
 
     def run(self):
