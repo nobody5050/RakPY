@@ -29,11 +29,10 @@ class Server:
     def sendPacket(self, pk, address):
         pk.encode()
         buffer = BitStream.getBuffer()
-        ServerSocket.putPacket(self, buffer, address)
+        ServerSocket.putPacket(self, buffer[1:len(buffer)], address)
         
     def sendRawPacket(self, pk, address):
         pk.encode()
-        BitStream.buffer = bytes([pk.PID]) + BitStream.getBuffer()
         buffer = BitStream.getBuffer()
         ServerSocket.putPacket(self, buffer, address)
     
@@ -45,7 +44,7 @@ class Server:
             pk.time = int(t.time() - self.startTime)
             pk.serverID = BitStream.readLong(b"\x10\x00\x10\x00\x10\x00\x10\x00")
             pk.serverIDString = self.options["name"]
-            self.sendPacket(pk, address)
+            self.sendRawPacket(pk, address)
 
     def run(self):
         sock = ServerSocket(self.address)
