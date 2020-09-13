@@ -41,8 +41,7 @@ class AcknowledgePacket(Packet):
             records += 1
         self.putShort(records)
         self.put(payload)
-            
-        
+          
     def decodePayload(self):
-        pass
+        count = self.getShort()
         
