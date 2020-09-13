@@ -4,10 +4,10 @@ from rakpy.InternetAddress import InternetAddress
 class Packet(BinaryStream):
     id = -1
     
-    def readString(self):
+    def getString(self):
         self.get(self.getShort())
 
-    def writeString(self, value):
+    def putString(self, value):
         self.putShort(len(value))
         self.put(value.encode())
     
