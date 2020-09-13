@@ -1,7 +1,7 @@
-from rakpy.protocol.Packet import Packet
+from rakpy.protocol.OfflinePacket import OfflinePacket
 from rakpy.protocol.PacketIdentifiers import PacketIdentifiers
 
-class UnconnectedPing(Packet):
+class UnconnectedPing(OfflinePacket):
     id = PacketIdentifiers.UnconnectedPing
     
     timeStamp = None
