@@ -2,18 +2,18 @@ from rakpy.protocol.Packet import Packet
 from rakpy.protocol.PacketIdentifiers import PacketIdentifiers
 
 class UnconnectedPing(Packet):
-    PID = PacketIdentifiers.UnconnectedPing
+    id = PacketIdentifiers.UnconnectedPing
     
-    time = None
-    clientID = None
+    timeStamp = None
+    clientId = None
     
     def encodePayload(self):
-        self.putLong(self.time)
+        self.putLong(self.timeStamp)
         self.putMagic()
-        self.putLong(self.clientID)
+        self.putLong(self.clientId)
         
     def decodePayload(self):
-        self.time = self.getLong()
+        self.timeStamp = self.getLong()
         self.magic = self.getMagic()
-        self.clientID = self.getLong()
+        self.clientId = self.getLong()
     
