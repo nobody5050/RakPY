@@ -6,7 +6,7 @@ class ServerSocket:
     def __init__(self, address):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
         try:
-            self.socket.bind(address)
+            self.socket.bind((address.getAddress(), address.getPort()))
         except socket.error as e:
             print("Cannot use this port! Is a server already on it?")
             print(str(e))
