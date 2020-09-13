@@ -1,3 +1,4 @@
+from binutilspy.Binary import Binary
 from rakpy.protocol.Packet import Packet
 from rakpy.protocol.PacketIdentifiers import PacketIdentifiers
 
@@ -5,6 +6,7 @@ class AcknowledgePacket(Packet):
     packets = []
     
     def encodePayload(self):
+        payload = b""
         records = 0
         self.packets.sort(key=int)
         count = len(self.packets)
@@ -20,15 +22,16 @@ class AcknowledgePacket(Packet):
                     last = current
                 elif diff > 1:
                     if start == last:
-                        self.putByte(1)
-                        self.putLTriad(start)
+                        payload += Binary.writeByte(1)
+                        payload += Binary.writeLTriad(start)
                         start = last = current
                     else:
-                        self.putByte(0)
-                        self.putLTriad(start)
-                        self.putLTriad(last)
+                        payload += Binary.writeByte(0)
+                        payload += Binary.writeLTriad(start)
+                        payload += Binary.writeLTriad(last)
                         start = last = current
                     records += 1
+            pass
             
         
     def decodePayload(self):
