@@ -1,5 +1,6 @@
 import time as t
-from rakpy.BitStream import BitStream
+from binutilspy.Binary import Binary
+from binutilspy.BinaryStream import BinaryStream
 from rakpy.protocol.ConnectedPing import ConnectedPing
 from rakpy.protocol.ConnectedPong import ConnectedPong
 from rakpy.protocol.UnconnectedPing import UnconnectedPing
@@ -28,12 +29,12 @@ class Server:
     
     def sendPacket(self, pk, address):
         pk.encode()
-        buffer = BitStream.getBuffer()
+        buffer = BinaryStream.getBuffer()
         ServerSocket.putPacket(self, buffer[1:len(buffer)], (address.getAddress, address.getPort))
         
     def sendRawPacket(self, pk, address):
         pk.encode()
-        buffer = BitStream.getBuffer()
+        buffer = BinaryStream.getBuffer()
         ServerSocket.putPacket(self, buffer, (address.getAddress, address.getPort))
     
     def handle(self, data, address):
@@ -42,7 +43,7 @@ class Server:
         if pid == UnconnectedPing.PID or pid == UnconnectedPingOpenConnection.PID:
             pk = UnconnectedPong()
             pk.time = int(t.time() - self.startTime)
-            pk.serverId = BitStream.readLong(b"\x10\x00\x10\x00\x10\x00\x10\x00")
+            pk.serverId = Binary.readLong(b"\x10\x00\x10\x00\x10\x00\x10\x00")
             pk.serverName = self.options["name"]
             self.sendRawPacket(pk, address)
 
