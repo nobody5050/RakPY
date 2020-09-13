@@ -2,9 +2,9 @@ from rakpy.protocol.Packet import Packet
 from rakpy.protocol.PacketIdentifiers import PacketIdentifiers
 
 class ConnectedPing(Packet):
-    PID = PacketIdentifiers.ConnectedPing
+    id = PacketIdentifiers.ConnectedPing
     
-    time = None
+    timeStamp = None
     
     def encodePayload(self):
         self.putLong(self.time)
