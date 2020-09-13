@@ -41,7 +41,7 @@ class Server:
     def handle(self, data, address: InternetAddress):
         id = self.getId(data)
         pk = None
-        if id == UnconnectedPing.PID or id == UnconnectedPingOpenConnection.PID:
+        if id == UnconnectedPing.id or id == UnconnectedPingOpenConnection.id:
             pk = UnconnectedPong()
             pk.time = int(t.time() - self.startTime)
             pk.serverId = Binary.readLong(b"\x10\x00\x10\x00\x10\x00\x10\x00")
