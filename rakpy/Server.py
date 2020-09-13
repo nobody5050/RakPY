@@ -1,6 +1,7 @@
 import time as t
 from binutilspy.Binary import Binary
 from binutilspy.BinaryStream import BinaryStream
+from rakpy.InternetAddress import InternetAddress
 from rakpy.protocol.ConnectedPing import ConnectedPing
 from rakpy.protocol.ConnectedPong import ConnectedPong
 from rakpy.protocol.UnconnectedPing import UnconnectedPing
@@ -18,29 +19,29 @@ class Server:
                   "custom_packets": [0x80]
               }
 
-    def __init__(self, address):
+    def __init__(self, address: InternetAddress):
         self.address = address
         
     def setOption(self, name, value):
         self.options[name] = value
 
-    def getPID(self, data):
+    def getId(self, data):
         return data[0]
     
-    def sendPacket(self, pk, address):
+    def sendPacket(self, pk, address: InternetAddress):
         pk.encode()
         buffer = BinaryStream.getBuffer()
         ServerSocket.putPacket(self, buffer[1:len(buffer)], (address.getAddress, address.getPort))
         
-    def sendRawPacket(self, pk, address):
+    def sendRawPacket(self, pk, address: InternetAddress):
         pk.encode()
         buffer = BinaryStream.getBuffer()
         ServerSocket.putPacket(self, buffer, (address.getAddress, address.getPort))
     
-    def handle(self, data, address):
-        pid = self.getPID(data)
+    def handle(self, data, address: InternetAddress):
+        id = self.getId(data)
         pk = None
-        if pid == UnconnectedPing.PID or pid == UnconnectedPingOpenConnection.PID:
+        if id == UnconnectedPing.PID or id == UnconnectedPingOpenConnection.PID:
             pk = UnconnectedPong()
             pk.time = int(t.time() - self.startTime)
             pk.serverId = Binary.readLong(b"\x10\x00\x10\x00\x10\x00\x10\x00")
