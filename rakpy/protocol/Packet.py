@@ -54,9 +54,8 @@ class Packet(BinaryStream):
             raise Exception(f"Unknown address version {ver}")
     
     def encodeHeader(self):
-        self.putByte(self.PID)
-       
-    @abstractmethod
+        self.putByte(self.id)
+        
     def encodePayload(self): pass
         
     def encode(self):
@@ -64,7 +63,6 @@ class Packet(BinaryStream):
         self.encodeHeader()
         self.encodePayload()
         
-    @abstractmethod
     def decodePayload(self): pass
     
     def decodeHeader(self):
