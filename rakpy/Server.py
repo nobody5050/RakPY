@@ -29,12 +29,12 @@ class Server:
     def sendPacket(self, pk, address):
         pk.encode()
         buffer = BitStream.getBuffer()
-        ServerSocket.putPacket(self, buffer[1:len(buffer)], address)
+        ServerSocket.putPacket(self, buffer[1:len(buffer)], (address.getAddress, address.getPort))
         
     def sendRawPacket(self, pk, address):
         pk.encode()
         buffer = BitStream.getBuffer()
-        ServerSocket.putPacket(self, buffer, address)
+        ServerSocket.putPacket(self, buffer, (address.getAddress, address.getPort))
     
     def handle(self, data, address):
         pid = self.getPID(data)
@@ -42,8 +42,8 @@ class Server:
         if pid == UnconnectedPing.PID or pid == UnconnectedPingOpenConnection.PID:
             pk = UnconnectedPong()
             pk.time = int(t.time() - self.startTime)
-            pk.serverID = BitStream.readLong(b"\x10\x00\x10\x00\x10\x00\x10\x00")
-            pk.serverIDString = self.options["name"]
+            pk.serverId = BitStream.readLong(b"\x10\x00\x10\x00\x10\x00\x10\x00")
+            pk.serverName = self.options["name"]
             self.sendRawPacket(pk, address)
 
     def run(self):
@@ -53,4 +53,4 @@ class Server:
         while True:
             if sock.getPacket() != None:
                 data, address = sock.getPacket()
-                self.handle(data, address)
+                self.handle(data, InternetAddress(address[0], address[1]))
