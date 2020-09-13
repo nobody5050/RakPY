@@ -4,7 +4,7 @@ from rakpy.protocol.PacketIdentifiers import PacketIdentifiers
 class ConnectedPing(Packet):
     id = PacketIdentifiers.ConnectedPing
     
-    timeStamp = None
+    time = None
     
     def encodePayload(self):
         self.putLong(self.time)
