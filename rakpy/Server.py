@@ -31,12 +31,12 @@ class Server:
     def sendPacket(self, pk, address: InternetAddress):
         pk.encode()
         buffer = BinaryStream.getBuffer()
-        ServerSocket.putPacket(self, buffer[1:len(buffer)], (address.getAddress, address.getPort))
+        ServerSocket.putPacket(self, buffer[1:len(buffer)], (address.getAddress(), address.getPort()))
         
     def sendRawPacket(self, pk, address: InternetAddress):
         pk.encode()
         buffer = BinaryStream.getBuffer()
-        ServerSocket.putPacket(self, buffer, (address.getAddress, address.getPort))
+        ServerSocket.putPacket(self, buffer, (address.getAddress(), address.getPort()))
     
     def handle(self, data, address: InternetAddress):
         id = self.getId(data)
