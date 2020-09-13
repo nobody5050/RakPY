@@ -4,18 +4,18 @@ from rakpy.protocol.PacketIdentifiers import PacketIdentifiers
 class UnconnectedPong(Packet):
     PID = PacketIdentifiers.UnconnectedPong
     
-    time = None
+    timeStamp = None
     serverID = None
-    serverIDString = None
+    serverName = None
     
     def encodePayload(self):
-        self.putLong(self.time)
+        self.putLong(self.timeStamp)
         self.putLong(self.serverID)
         self.putMagic()
-        self.putString(self.serverIDString)
+        self.putString(self.serverName)
         
     def decodePayload(self):
-        self.time = self.getLong()
+        self.timeStamp = self.getLong()
         self.serverID = self.getLong()
         self.magic = self.getMagic()
-        self.serverIDString = self.getString()
+        self.serverName = self.getString()
