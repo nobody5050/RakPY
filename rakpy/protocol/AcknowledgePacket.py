@@ -31,7 +31,16 @@ class AcknowledgePacket(Packet):
                         payload += Binary.writeLTriad(last)
                         start = last = current
                     records += 1
-            pass
+            if start == last:
+                payload += Binary.writeByte(1)
+                payload += Binary.writeLTriad(start)
+            else:
+                payload += Binary.writeByte(0)
+                payload += Binary.writeLTriad(start)
+                payload += Binary.writeLTriad(last)
+            records += 1
+        self.putShort(records)
+        self.put(payload)
             
         
     def decodePayload(self):
