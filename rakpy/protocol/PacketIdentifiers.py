@@ -12,5 +12,5 @@ class PacketIdentifiers:
     ConnectionRequestAccepted = 0x10
     IncompatibleProtocol = 0x19
     GamePacket = 0x8e
-    Nack = 0xa0
-    Ack = 0xc0
+    NacknowledgePacket = 0xa0
+    AcknowledgePacket = 0xc0
