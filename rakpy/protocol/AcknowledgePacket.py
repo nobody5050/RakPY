@@ -48,6 +48,19 @@ class AcknowledgePacket(Packet):
         cnt = 0
         i = 0
         while i < count and not self.feof() and cnt < 4096:
-            pass
+            recordType = self.getByte()
+            if recordType == 0:
+                start = self.getLTriad()
+                end = self.getLTriad()
+                if (end - start) > 512:
+                    end = start + 512
+                c = start
+                while c <= end:
+                    self.packets.insert(cnt, c)
+                    cnt += 1
+                    c += 1
+            else:
+                self.packets.insert(cnt, self.getLTriad())
+                cnt += 1
         
         
