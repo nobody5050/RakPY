@@ -62,5 +62,3 @@ class AcknowledgePacket(Packet):
             else:
                 self.packets.insert(cnt, self.getLTriad())
                 cnt += 1
-        
-        
