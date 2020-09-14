@@ -43,5 +43,11 @@ class AcknowledgePacket(Packet):
         self.put(payload)
           
     def decodePayload(self):
+        self.packets = []
         count = self.getShort()
+        cnt = 0
+        i = 0
+        while i < count and not self.feof() and cnt < 4096:
+            pass
+        
         
