@@ -2,7 +2,7 @@ from rakpy.protocol.OfflinePacket import OfflinePacket
 from rakpy.protocol.PacketIdentifiers import PacketIdentifiers
 
 class OpenConnectionRequest1(OfflinePacket):
-    id = PacketIdentifiers.ConnectionRequest1
+    id = PacketIdentifiers.OpenConnectionRequest1
     
     protocolVersion = None
     mtu = None
