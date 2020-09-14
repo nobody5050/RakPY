@@ -10,9 +10,9 @@ class OpenConnectionRequest1(OfflinePacket):
     def encodePayload(self):
         self.putMagic()
         self.putByte(self.protocolVersion)
-        self.buffer.ljust(self.mtuSize, b"\x00")
+        self.buffer.ljust(self.mtu, b"\x00")
         
     def decodePayload(self):
         self.magic = self.getMagic()
         self.protocolVersion = self.getByte()
-        self.mtuSize = len(self.buffer)
+        self.mtu = len(self.buffer)
