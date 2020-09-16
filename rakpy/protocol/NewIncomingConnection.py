@@ -5,7 +5,7 @@ class NewIncomingConnection(Packet):
     id = PacketIdentifiers.NewIncomingConnection
     
     address = None
-    systemAddresses = None
+    systemAddresses = []
     pingTime = None
     pongTime = None
     
