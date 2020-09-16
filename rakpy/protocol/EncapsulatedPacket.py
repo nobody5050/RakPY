@@ -17,11 +17,20 @@ class EncapsulatedPacket:
     identifierAck = None
     
     def fromBinary(self, buffer):
+        offset = 0
         packet = EncapsulatedPacket()
-        header = buffer[0]
+        header = buffer[offset]
+        offset += 1
         packet.reliability = (header & 224) >> 5
         packet.split = (header & BitFlags.Split) > 0
-        length = buffer[1:3]
+        length = buffer[offset:offset + 2]
         length >>= 3
+        offset += 2
         if length == 0:
             raise Exception("Got an empty encapsulated packet")
+        if Reliability.isReliable(packet.reliability):
+            packet.messageIndex = buffer[offset:offset + 3]
+            offset += 3
+        if Reliability.isSequenced(packet.reliability):
+            packet.sequenceIndex = buffer[offset:offset + 3]
+            offset += 3
