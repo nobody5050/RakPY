@@ -7,3 +7,17 @@ class Reliability:
     unreliableAckReceipt = 5
     reliableAckReceipt = 6
     reliableOrderedAckReceipt = 7
+    
+    def isReliable(self, reliability):
+        if reliability == self.reliable:
+            return True
+        elif reliability == self.reliableOrdered:
+            return True
+        elif reliability == self.reliableSequenced:
+            return True
+        elif reliability == self.reliableAckReceipt:
+            return True
+        elif reliability == self.reliableOrderedAckReceipt:
+            return True
+        else:
+            return False
