@@ -21,3 +21,11 @@ class Reliability:
             return True
         else:
             return False
+        
+    def isSequenced(self, reliability):
+        if reliability == self.unreliableSequenced:
+            return True
+        elif reliability == self.reliableSequenced:
+            return True
+        else:
+            return False
