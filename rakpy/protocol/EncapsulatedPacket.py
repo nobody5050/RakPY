@@ -12,7 +12,7 @@ class EncapsulatedPacket:
     split = None
     splitCount = None
     splitIndex = None
-    splitID = None
+    splitId = None
     needAck = False
     identifierAck = None
     
@@ -40,4 +40,10 @@ class EncapsulatedPacket:
             packet.orderChannel = Binary.readByte(buffer[offset:offset + 1])
             offset += 1
         if packet.split:
-            pass
+            packet.splitCount = Binary.readInt(buffer[offset:offset + 4])
+            offset += 4
+            packet.splitId = Binary.readShort(buffer[offset:offset + 2])
+            offset += 2
+            packet.splitIndex = Binary.readInt(buffer[offset:offset + 4])
+            offset += 4
+            
