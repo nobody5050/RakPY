@@ -8,7 +8,6 @@ class PacketIdentifiers:
     OpenConnectionReply1 = 0x06
     OpenConnectionRequest2 = 0x07
     OpenConnectionReply2 = 0x08
-    GamePacket = 0x8e
     ConnectionRequest = 0x09
     ConnectionRequestAccepted = 0x10
     NewIncomingConnection = 0x13
