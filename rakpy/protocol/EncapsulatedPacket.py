@@ -34,3 +34,10 @@ class EncapsulatedPacket:
         if Reliability.isSequenced(packet.reliability):
             packet.sequenceIndex = Binary.readLTriad(buffer[offset:offset + 3])
             offset += 3
+        if Reliability.isSequencedOrOrdered(packet.reliability):
+            packet.orderIndex = Binary.readLTriad(buffer[offset:offset + 3])
+            offset += 3
+            packet.orderChannel = Binary.readByte(buffer[offset:offset + 1])
+            offset += 1
+        if packet.split:
+            pass
