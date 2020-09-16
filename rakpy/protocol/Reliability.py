@@ -37,3 +37,15 @@ class Reliability:
             return True
         else:
             return False
+        
+    def isSequencedOrOrdered(self, reliability):
+        if reliability == self.unreliableSequenced:
+            return True
+        elif reliability == self.reliableOrdered:
+            return True
+        elif reliability == self.reliableSequenced:
+            return True
+        elif reliability == self.reliableOrderedAckReceipt:
+            return True
+        else:
+            return False
