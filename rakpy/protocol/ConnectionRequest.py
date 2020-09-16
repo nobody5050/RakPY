@@ -1,4 +1,3 @@
-
 from rakpy.protocol.Packet import Packet
 from rakpy.protocol.PacketIdentifiers import PacketIdentifiers
 
