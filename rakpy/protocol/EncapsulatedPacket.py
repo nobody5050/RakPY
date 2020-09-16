@@ -19,18 +19,18 @@ class EncapsulatedPacket:
     def fromBinary(self, buffer):
         offset = 0
         packet = EncapsulatedPacket()
-        header = buffer[offset]
+        header = Binary.readByte(buffer[offset])
         offset += 1
         packet.reliability = (header & 224) >> 5
         packet.split = (header & BitFlags.Split) > 0
-        length = buffer[offset:offset + 2]
+        length = Binary.readShort(buffer[offset:offset + 2])
         length >>= 3
         offset += 2
         if length == 0:
             raise Exception("Got an empty encapsulated packet")
         if Reliability.isReliable(packet.reliability):
-            packet.messageIndex = buffer[offset:offset + 3]
+            packet.messageIndex = Binary.readLTriad(buffer[offset:offset + 3])
             offset += 3
         if Reliability.isSequenced(packet.reliability):
-            packet.sequenceIndex = buffer[offset:offset + 3]
+            packet.sequenceIndex = Binary.readLTriad(buffer[offset:offset + 3])
             offset += 3
