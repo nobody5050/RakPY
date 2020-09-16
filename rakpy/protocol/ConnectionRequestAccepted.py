@@ -11,14 +11,14 @@ class ConnectionRequestAccepted(Packet):
     time = None
     
     def encodePayload(self):
-        self.putLong(self.clientAddress)
+        self.putAddress(self.clientAddress)
         self.putShort(self.systemIndex)
         
         self.putLong(self.requestTime)
         self.putLong(self.time)
         
     def decodePayload(self):
-        self.clientAddress = self.getLong()
+        self.clientAddress = self.getAddress()
         self.systemIndex = self.getShort()
         
         self.requestTime = self.getLong()
