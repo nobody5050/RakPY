@@ -15,3 +15,13 @@ class EncapsulatedPacket:
     splitID = None
     needAck = False
     identifierAck = None
+    
+    def fromBinary(self, buffer):
+        packet = EncapsulatedPacket()
+        header = buffer[0]
+        packet.reliability = (header & 224) >> 5
+        packet.split = (header & BitFlags.Split) > 0
+        length = buffer[1:3]
+        length >>= 3
+        if length == 0:
+            raise Exception("Got an empty encapsulated packet")
