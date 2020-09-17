@@ -17,9 +17,9 @@ class MinecraftServerName:
             self.motd,
             self.protocol,
             self.version,
-            self.players["online"],
-            self.players["max"],
-            self.serverId,
+            str(self.players["online"]),
+            str(self.players["max"]),
+            str(self.serverId),
             self.name,
             self.gamemode
         ]) + ";"
