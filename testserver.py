@@ -1,4 +1,4 @@
-from rakpy.Server import Server
+from rakpy.server.Server import Server
 from rakpy.utils.InternetAddress import InternetAddress
 from rakpy.utils.MinecraftServerName import MinecraftServerName
 
