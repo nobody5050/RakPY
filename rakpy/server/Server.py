@@ -7,7 +7,7 @@ from rakpy.protocol.ConnectedPong import ConnectedPong
 from rakpy.protocol.UnconnectedPing import UnconnectedPing
 from rakpy.protocol.UnconnectedPingOpenConnection import UnconnectedPingOpenConnection
 from rakpy.protocol.UnconnectedPong import UnconnectedPong
-from rakpy.Socket import Socket
+from rakpy.server.Socket import Socket
 
 class Server:
     address = None
