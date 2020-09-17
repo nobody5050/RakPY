@@ -51,6 +51,21 @@ class EncapsulatedPacket:
         return packet
     
     def toBinary(self):
+        buffer = b""
         header = self.reliability << 5
         if self.split:
             header |= BitFlags.Split
+        buffer += Binary.writeByte(header)
+        buffer += Binary.writeShort(len(self.buffer) << 3)
+        if Reliability.isReliable(self.reliability):
+            buffer += Binary.writeLTriad(self.messageIndex)
+        if Reliability.isSequenced(self.reliability):
+            buffer += Binary.writeLTriad(self.sequenceIndex)
+        if Reliability.isSequencedOrOrdered(self.reliability):
+            buffer += Binary.writeLTriad(self.orderIndex)
+            buffer += Binary.writeByte(self.orderChannel)
+        if self.split:
+            buffer += Binary.writeInt(self.splitCount)
+            buffer += Binary.writeShort(self.splitId)
+            buffer += Binary.writeInt(self.splitIndex)
+        return buffer + self.buffer
