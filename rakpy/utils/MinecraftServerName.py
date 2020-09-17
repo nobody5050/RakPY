@@ -15,7 +15,7 @@ class MinecraftServerName:
         return ";".join([
             self.edition,
             self.motd,
-            self.protocol,
+            str(self.protocol),
             self.version,
             str(self.players["online"]),
             str(self.players["max"]),
