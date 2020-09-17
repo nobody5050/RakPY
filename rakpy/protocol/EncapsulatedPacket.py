@@ -46,6 +46,6 @@ class EncapsulatedPacket:
             offset += 2
             packet.splitIndex = Binary.readInt(buffer[offset:offset + 4])
             offset += 4
-        packet.buffer = buffer[offset:length]
+        packet.buffer = buffer[offset:offset + length]
         offset += length
         return packet
