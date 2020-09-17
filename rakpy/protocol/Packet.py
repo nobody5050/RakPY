@@ -1,5 +1,5 @@
 from binutilspy.BinaryStream import BinaryStream
-from rakpy.InternetAddress import InternetAddress
+from rakpy.utils.InternetAddress import InternetAddress
 
 class Packet(BinaryStream):
     id = -1
