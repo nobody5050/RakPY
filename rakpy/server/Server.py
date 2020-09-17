@@ -49,7 +49,7 @@ class Server:
             self.sendRawPacket(pk, address)
 
     def run(self):
-        serverSocket = Socket(self.address).socket
+        serverSocket = Socket(self.address)
         self.socket = serverSocket.socket
         self.startTime = t.time()
         while True:
