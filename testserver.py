@@ -1,5 +1,5 @@
 from rakpy.Server import Server
-from rakpy.InternetAddress import InternetAddress
+from rakpy.utils.InternetAddress import InternetAddress
 
 server = Server(InternetAddress("0.0.0.0", 19132))
 server.setOption("name", "MCPE;My server;407;1.16.0;0;0;0;MyServer;0")
