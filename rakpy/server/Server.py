@@ -7,7 +7,7 @@ from rakpy.protocol.ConnectedPong import ConnectedPong
 from rakpy.protocol.UnconnectedPing import UnconnectedPing
 from rakpy.protocol.UnconnectedPingOpenConnection import UnconnectedPingOpenConnection
 from rakpy.protocol.UnconnectedPong import UnconnectedPong
-from rakpy.ServerSocket import ServerSocket
+from rakpy.Socket import Socket
 
 class Server:
     address = None
@@ -49,10 +49,10 @@ class Server:
             self.sendRawPacket(pk, address)
 
     def run(self):
-        sock = ServerSocket(self.address)
-        self.socket = sock.socket
+        serverSocket = Socket(self.address).socket
+        self.socket = serverSocket.socket
         self.startTime = t.time()
         while True:
             if sock.getPacket() != None:
-                data, address = sock.getPacket()
+                data, address = serverSocket.getPacket()
                 self.handle(data, InternetAddress(address[0], address[1]))
