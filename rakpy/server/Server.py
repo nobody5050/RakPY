@@ -52,6 +52,6 @@ class Server:
         self.socket = Socket(self.address)
         self.startTime = t.time()
         while True:
-            if sock.getPacket() != None:
+            if self.socket.getPacket() != None:
                 data, address = self.socket.getPacket()
                 self.handle(data, InternetAddress(address[0], address[1]))
