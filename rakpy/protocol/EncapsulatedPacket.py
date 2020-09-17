@@ -49,3 +49,8 @@ class EncapsulatedPacket:
         packet.buffer = buffer[offset:offset + length]
         offset += length
         return packet
+    
+    def toBinary(self):
+        header = self.reliability << 5
+        if self.split:
+            header |= BitFlags.Split
