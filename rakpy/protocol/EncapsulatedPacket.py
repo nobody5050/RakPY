@@ -69,3 +69,11 @@ class EncapsulatedPacket:
             buffer += Binary.writeShort(self.splitId)
             buffer += Binary.writeInt(self.splitIndex)
         return buffer + self.buffer
+    
+    def getTotalLength(self):
+        value = 3
+        value += len(self.buffer)
+        value += 3 if self.messageIndex != None else 0
+        value += 4 if self.orderIndex != None else 0
+        value += 10 if self.split else 0
+        
