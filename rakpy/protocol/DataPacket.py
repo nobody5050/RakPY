@@ -18,3 +18,9 @@ class DataPacket(Packet):
         self.sequenceNumber = self.getLTriad()
         while not self.feof():
             self.packets.append(EncapsulatedPacket.fromBinary(self.getBuffer()))
+            
+    def length(self):
+        length = 4
+        for packet in self.packets:
+            length += packet.getTotalLength() if isintance(packet, EncapsulatedPacket) else len(packet.getBuffer())
+        return length
