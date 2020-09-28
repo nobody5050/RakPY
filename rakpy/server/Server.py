@@ -1,57 +1,122 @@
-import time as t
 from binutilspy.Binary import Binary
-from binutilspy.BinaryStream import BinaryStream
-from rakpy.utils.InternetAddress import InternetAddress
-from rakpy.protocol.ConnectedPing import ConnectedPing
-from rakpy.protocol.ConnectedPong import ConnectedPong
+from rakpy.protocol.PacketIdentifiers import PacketIdentifiers
 from rakpy.protocol.UnconnectedPing import UnconnectedPing
-from rakpy.protocol.UnconnectedPingOpenConnection import UnconnectedPingOpenConnection
 from rakpy.protocol.UnconnectedPong import UnconnectedPong
-from rakpy.server.Socket import Socket
+from rakpy.protocol.OpenConnectionRequest1 import OpenConnectionRequest1
+from rakpy.protocol.OpenConnectionReply1 import OpenConnectionReply1
+from rakpy.protocol.OpenConnectionRequest2 import OpenConnectionRequest2
+from rakpy.protocol.OpenConnectionReply2 import OpenConnectionReply2
+from rakpy.protocol.IncompatibleProtocol import IncompatibleProtocol
+from rakpy.server.Connection import Connection
+from rakpy.server.ServerInterface import ServerInterface
+from rakpy.server.ServerSocket import ServerSocket
+from rakpy.utils.InternetAddress import InternetAddress
+import os
+from threading import Thread
+from time import sleep, time as timeNow
 
-class Server:
-    address = None
-    startTime = None
+class Server(Thread):
+    protocol = 10
+    raknetTps = 100
+    raknetTickLength = 1 / raknetTps
     
-    options = {
-                  "name": "",
-                  "custom_handler": lambda data, address, socket: 0,
-                  "custom_packets": [0x80]
-              }
-
-    def __init__(self, address: InternetAddress):
-        self.address = address
+    id = Binary.readLong(os.urandom(8))
+    name = None
+    socket = None
+    interface = None
+    connections = {}
+    shutdown = False
+    
+    def __init__(self, address, interface = None):
+        super().__init__()
+        self.socket = ServerSocket(address)
+        if interface != None:
+            self.interface = interface
+        else:
+            self.interface = ServerInterface()
+        self.start()
         
-    def setOption(self, name, value):
-        self.options[name] = value
-
-    def getId(self, data):
-        return data[0]
+    def handleUnconnectedPing(self, data):
+        decodedPacket = UnconnectedPing()
+        decodedPacket.buffer = data
+        decodedPacket.decode()
+        if not decodedPacket.isValid:
+            raise Exception("Invalid offline message")
+        packet = UnconnectedPong()
+        packet.time = decodedPacket.time
+        packet.serverId = self.id
+        packet.serverName = self.name
+        packet.encode()
+        return packet.buffer
     
-    def sendPacket(self, pk, address: InternetAddress):
-        pk.encode()
-        buffer = BinaryStream.getBuffer()
-        self.socket.putPacket(buffer[1:len(buffer)], (address.getAddress(), address.getPort()))
+    def handleOpenConnectionRequest1(self, data):
+        decodedPacket = OpenConnectionRequest1()
+        decodedPacket.buffer = data
+        decodedPacket.decode()
+        if not decodedPacket.isValid:
+            raise Exception("Invalid offline message")
+        if decodedPacket.protocolVersion != self.protocol:
+            packet = IncompatibleProtocol()
+            packet.protocol = self.protocol
+            packet.serverId = self.id
+            packet.encode()
+            return packet.buffer
+        packet = OpenConnectionReply1()
+        packet.serverId = self.id
+        packet.mtu = decodedPacket.mtu
+        packet.encode()
+        return packet.buffer
+    
+    def handleOpenConnectionRequest2(self, data, address):
+        decodedPacket = OpenConnectionRequest2()
+        decodedPacket.buffer = data
+        decodedPacket.decode()
+        if not decodedPacket.isValid:
+            raise Exception("Invalid offline message")
+        packet = OpenConnectionReply2()
+        packet.serverId = self.id
+        packet.mtu = decodedPacket.mtu
+        packet.clientAddress = address
+        packet.encode()
+        token = str(address.getAddress()) + ":" + str(address.getPort())
+        connection = Connection(self, decodedPacket.mtu, address)
+        self.connections[token] = connection
+        return packet.buffer
         
-    def sendRawPacket(self, pk, address: InternetAddress):
-        pk.encode()
-        buffer = BinaryStream.getBuffer()
-        self.socket.putPacket(buffer, (address.getAddress(), address.getPort()))
-    
-    def handle(self, data, address: InternetAddress):
-        id = self.getId(data)
-        pk = None
-        if id == UnconnectedPing.id or id == UnconnectedPingOpenConnection.id:
-            pk = UnconnectedPong()
-            pk.time = int(t.time() - self.startTime)
-            pk.serverId = Binary.readLong(b"\x10\x00\x10\x00\x10\x00\x10\x00")
-            pk.serverName = self.options["name"]
-            self.sendRawPacket(pk, address)
-
+    def handle(self, data, address):
+        header = data[0]
+        token = str(address.getAddress()) + ":" + str(address.getPort())
+        if token in self.connections:
+            connection = self.connections[token]
+            connection.receive(data)
+        else:
+            if header == PacketIdentifiers.UnconnectedPing:
+                self.socket.sendBuffer(self.handleUnconnectedPing(data), (address.getAddress(), address.getPort()))
+            elif header == PacketIdentifiers.OpenConnectionRequest1:
+                self.socket.sendBuffer(self.handleOpenConnectionRequest1(data), (address.getAddress(), address.getPort()))
+            elif header == PacketIdentifiers.OpenConnectionRequest2:
+                self.socket.sendBuffer(self.handleOpenConnectionRequest2(data, address), (address.getAddress(), address.getPort()))
+       
+    def removeConnection(self, connection, reason):
+        address = connection.address
+        token = f"{address.getAddress}:{address.getPort}"
+        if token in self.connections:
+            self.connections[token].close()
+            del self.connections[token]
+        self.interface.onCloseConnection(connection.address, reason)
+        
+    def tick(self):
+        if not self.shutdown:
+            for token, connection in self.connections.items():
+                connection.update(timeNow())
+        else:
+            return
+        sleep(self.raknetTickLength)
+        
     def run(self):
-        self.socket = Socket(self.address)
-        self.startTime = t.time()
         while True:
-            if self.socket.getPacket() != None:
-                data, address = self.socket.getPacket()
+            buffer = self.socket.receiveBuffer()
+            if buffer != None:
+                data, address = buffer
                 self.handle(data, InternetAddress(address[0], address[1]))
+                self.tick()
