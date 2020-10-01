@@ -11,6 +11,7 @@ from rakpy.protocol.DataPacket import DataPacket
 from rakpy.protocol.EncapsulatedPacket import EncapsulatedPacket
 from rakpy.protocol.Nack import Nack
 from rakpy.protocol.NewIncomingConnection import NewIncomingConnection
+from rakpy.protocol.PacketIdentifiers import PacketIdentifiers
 from rakpy.utils.InternetAddress import InternetAddress
 from time import time as timeNow
 
@@ -186,7 +187,7 @@ class Connection:
                 self.reliableWindowStart += 1
                 self.reliableWindowEnd += 1
                 self.handlePacket(packet)
-                if self.reliableWindow.size > 0:
+                if len(self.reliableWindow) > 0:
                     windows = deepcopy(self.reliableWindow)
                     reliableWindow = {}
                     windows.sort()
@@ -219,7 +220,7 @@ class Connection:
             for i in range(0, len(packet.buffer), self.mtuSize - 34):
                 buffers.append(packet.buffer[i:i - (self.mtuSize - 34)])
             self.splitId += 1
-            splitID = self.splitID % 65536
+            splitId = self.splitId % 65536
             for count, buffer in enumerate(buffers):
                 pk = EncapsulatedPacket()
                 pk.splitId = splitId
@@ -282,13 +283,14 @@ class Connection:
                     dataPacket.decode()
                     pk = ConnectionRequestAccepted()
                     pk.clientAddress = self.address
+                    pk.systemIndex = 0
                     pk.requestTime = dataPacket.time
-                    pk.time = Binary.flipLongEndianness(timeNow()) if Binary.ENDIANESS == Binary.LITTLE_ENDIAN else timeNow()
+                    pk.time = Binary.flipLongEndianness(int(timeNow())) if Binary.ENDIANNESS == Binary.LITTLE_ENDIAN else int(timeNow())
                     pk.encode()
                     sendPacket = EncapsulatedPacket()
                     sendPacket.reliability = 0
                     sendPacket.buffer = pk.buffer
-                    self.addToQueue(sendPacket, priority["Immediate"])
+                    self.addToQueue(sendPacket, self.priority["Immediate"])
                 elif id == PacketIdentifiers.NewIncomingConnection:
                     dataPacket = NewIncomingConnection()
                     dataPacket.buffer = packet.buffer
@@ -305,7 +307,7 @@ class Connection:
                 dataPacket.decode()
                 pk = ConnectedPong()
                 pk.pingTime = dataPacket.time
-                pk.pongTime = Binary.flipLongEndianness(timeNow()) if Binary.ENDIANESS == Binary.LITTLE_ENDIAN else timeNow()
+                pk.pongTime = Binary.flipLongEndianness(int(timeNow())) if Binary.ENDIANNESS == Binary.LITTLE_ENDIAN else int(timeNow())
                 pk.encode()
                 sendPacket = EncapsulatedPacket()
                 sendPacket.reliability = 0
